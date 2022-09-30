@@ -24,6 +24,8 @@ namespace UserMaintenance
             button1.Text = Resource1.Add;
             btnWrite.Text = Resource1.Write;
             btnDel.Text = Resource1.Del;
+            lblFirstName.Hide();
+            txtFirstName.Hide();
             listBox1.DataSource = users;
             listBox1.ValueMember = "ID";
             listBox1.DisplayMember = "FullName";
@@ -33,7 +35,7 @@ namespace UserMaintenance
         {
             var u = new User()
             {
-                FullName = txtFirstName.Text + " " + txtLastName.Text
+                FullName = txtLastName.Text
 
 
             };
@@ -60,10 +62,21 @@ namespace UserMaintenance
 
         private void btnDel_Click(object sender, EventArgs e)
         {
-            var a = (User)listBox1.SelectedItem;
-            var del = from u in users
-                      where  u.FullName.Equals(a)
-                      select u;
+
+
+            /*string id = (from u in users where u.FullName.Equals(txtLastName.Text) select u.ID).ToString();
+            string name = (from o in users where o.ID.Equals(id) select o.FullName).ToString();
+            var del = users.SingleOrDefault(s => s.FullName == id);
+            if (del !=null)
+            {
+                users.Remove(del);
+            }
+            users.Remove(users.SingleOrDefault(s => s.ID.ToString() == id));*/
+            var val = listBox1.SelectedValue.ToString();
+            var id = from u in users where u.ID.ToString() == val.ToString() select u;
+            users.Remove(id.FirstOrDefault());
+                
+            
 
 
 
