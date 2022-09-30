@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UserMaintenance.Entities;
+using System.IO;
 
 namespace UserMaintenance
 {
@@ -21,6 +22,7 @@ namespace UserMaintenance
             
             
             button1.Text = Resource1.Add;
+            btnWrite.Text = Resource1.Write;
             listBox1.DataSource = users;
             listBox1.ValueMember = "ID";
             listBox1.DisplayMember = "FullName";
@@ -35,6 +37,24 @@ namespace UserMaintenance
 
             };
             users.Add(u);
+        }
+
+        private void btnWrite_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.InitialDirectory = Application.StartupPath;
+            sfd.Filter = "Vesszővel tagolt szöveg (*.csv) |*.csv";
+            sfd.DefaultExt = "csv";
+            sfd.AddExtension = true;
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                StreamWriter sw = new StreamWriter(sfd.FileName,false, Encoding.Default);
+                foreach (var u in users)
+                {
+                    sw.WriteLine($"{u.ID};{u.FullName}");
+                }
+                sw.Close();
+            }
         }
     }
 }
