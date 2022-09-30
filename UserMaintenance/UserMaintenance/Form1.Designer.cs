@@ -36,6 +36,7 @@ namespace UserMaintenance
             this.lblFirstName = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.btnWrite = new System.Windows.Forms.Button();
+            this.btnDel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBox1
@@ -98,11 +99,22 @@ namespace UserMaintenance
             this.btnWrite.UseVisualStyleBackColor = true;
             this.btnWrite.Click += new System.EventHandler(this.btnWrite_Click);
             // 
+            // btnDel
+            // 
+            this.btnDel.Location = new System.Drawing.Point(259, 195);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(231, 43);
+            this.btnDel.TabIndex = 7;
+            this.btnDel.Text = "button2";
+            this.btnDel.UseVisualStyleBackColor = true;
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDel);
             this.Controls.Add(this.btnWrite);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblFirstName);
@@ -126,6 +138,7 @@ namespace UserMaintenance
         private System.Windows.Forms.Label lblFirstName;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button btnWrite;
+        private System.Windows.Forms.Button btnDel;
     }
 }
 

@@ -23,6 +23,7 @@ namespace UserMaintenance
             
             button1.Text = Resource1.Add;
             btnWrite.Text = Resource1.Write;
+            btnDel.Text = Resource1.Del;
             listBox1.DataSource = users;
             listBox1.ValueMember = "ID";
             listBox1.DisplayMember = "FullName";
@@ -55,6 +56,19 @@ namespace UserMaintenance
                 }
                 sw.Close();
             }
+        }
+
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            var a = (User)listBox1.SelectedItem;
+            var del = from u in users
+                      where  u.FullName.Equals(a)
+                      select u;
+
+
+
+
+            
         }
     }
 }
