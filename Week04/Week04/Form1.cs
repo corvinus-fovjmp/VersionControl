@@ -24,6 +24,7 @@ namespace Week04
         {
             InitializeComponent();
             LoadData();
+            CreateExcel();
         }
         private void LoadData()
         {
@@ -68,7 +69,7 @@ namespace Week04
             string[] headers = new string[]
             {
                 "Kód",
-                " Eladó",
+                "Eladó",
                 "Oldal",
                 "Kerület",
                 "Lift",
@@ -82,7 +83,7 @@ namespace Week04
 
             for (int i = 0; i < headers.Length; i++)
             {
-                xlSheet.Cells[i + 1, 1] = headers[i]; 
+                xlSheet.Cells[1,i+ 1] = headers[i]; 
             }
 
             object[,] values = new object[Flats.Count, headers.Length];
@@ -105,11 +106,16 @@ namespace Week04
                 values[counter, 5] = f.NumberOfRooms;
                 values[counter, 6] = f.FloorArea;
                 values[counter, 7] = f.Price;
-                values[counter, 8] = "";
+                values[counter, 8] = ""; 
                 counter++;
             }
             xlSheet.get_Range(GetCell(2, 1),
                 GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
+            for (int i = 0; i < values.Length; i++)
+            {
+                xlSheet.Cells[i + 2, 9] = "="+"H"+(i+2)+"/"+"G"+(i+2)+ "*1000000";
+            }
+
         }
         private string GetCell (int x, int y)
         {
