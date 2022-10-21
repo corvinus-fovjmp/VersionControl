@@ -25,7 +25,7 @@ namespace Week05
 
             InitializeComponent();
             dataGridView1.DataSource = Rates;
-            //comboBox1.DataSource = Currencies;
+            comboBox1.DataSource = Currencies;
             GetCurrencies();
             RefreshData();
         }
@@ -44,11 +44,16 @@ namespace Week05
             XmlNodeList list = xml.SelectNodes("MNBCurrencies/Currencies/Curr");
             int count = list.Count;
             
-            for (int i = 0; i < count-1; i++)
+            
+            foreach (XmlElement element in xml.DocumentElement)
             {
-                var currency = xml.ChildNodes[0].InnerText;
-                var childelement = xml.ChildNodes[0];
-                Currencies.Add(currency);
+                
+                for (int i = 0; i < count; i++)
+                {
+                    var childelement = (XmlElement)element.ChildNodes[i];
+                    var currency = childelement.InnerText;
+                    Currencies.Add(currency);
+                }
             }
             
 
