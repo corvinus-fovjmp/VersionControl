@@ -21,41 +21,66 @@ namespace week09
         List<DeathProbability> DeathProbabilities = new List<DeathProbability>();
         List<BirthProbability> BirthProbabilities = new List<BirthProbability>();
         Random rng = new Random(1234);
+        List<int> FemaleCount = new List<int>();
+        List<int> MaleCount = new List<int>();
+        List<int> Year = new List<int>();
         public Form1()
         {
             InitializeComponent();
+            label1.Text = "Záróév";
+            numericUpDown1.Value = 2024;
+            label2.Text = "Népesség Fájl";
+            button1.Text = "Browse";
+            button2.Text = "Start";
             //Népteszt
-            //Population = GetPopulation(@"C:\Temp\nép-teszt.csv");
+            Population = GetPopulation(@"C:\Temp\nép-teszt.csv");
             //Nép teljes
-            Population = GetPopulation(@"C:\Temp\nép.csv");
+            //Population = GetPopulation(@"C:\Temp\nép.csv");
             BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
             //dataGridView1.DataSource = Population;
 
-            for (int year = 2005; year <= 2024; year++)
+            
+
+        }
+
+        private void Simulation()
+        {
+            for (int year = 2005; year <= numericUpDown1.Value; year++)
             {
-                
+                Year.Add(year);
                 for (int i = 0; i < Population.Count; i++)
                 {
-                    SimStep(year,Population[i]);
+                    SimStep(year, Population[i]);
                 }
 
                 int nbrOfMales = (from x in Population
                                   where x.Gender == Gender.Male && x.IsAlive
                                   select x).Count();
+                MaleCount.Add(nbrOfMales);
                 int nbrOfFemales = (from x in Population
                                     where x.Gender == Gender.Female && x.IsAlive
                                     select x).Count();
+                FemaleCount.Add(nbrOfFemales);
 
                 //Console.WriteLine(string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
                 if (year == 2024)
                 {
                     MessageBox.Show(string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
                 }
-                
+
 
             }
+            DisplayResult();
+        }
 
+        private void DisplayResult()
+        {
+
+
+
+
+            richTextBox1.Text = string.Empty;
         }
 
         private void SimStep(int year, Person person)
@@ -160,6 +185,15 @@ namespace week09
 
 
         }
-        
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Simulation();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog()
+        }
     }
 }
