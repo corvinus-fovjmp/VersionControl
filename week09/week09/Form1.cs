@@ -24,12 +24,71 @@ namespace week09
         public Form1()
         {
             InitializeComponent();
+            //Népteszt
+            //Population = GetPopulation(@"C:\Temp\nép-teszt.csv");
+            //Nép teljes
             Population = GetPopulation(@"C:\Temp\nép.csv");
             BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
             DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
-            dataGridView1.DataSource = Population;
+            //dataGridView1.DataSource = Population;
+
+            for (int year = 2005; year <= 2024; year++)
+            {
+                
+                for (int i = 0; i < Population.Count; i++)
+                {
+                    SimStep(year,Population[i]);
+                }
+
+                int nbrOfMales = (from x in Population
+                                  where x.Gender == Gender.Male && x.IsAlive
+                                  select x).Count();
+                int nbrOfFemales = (from x in Population
+                                    where x.Gender == Gender.Female && x.IsAlive
+                                    select x).Count();
+
+                //Console.WriteLine(string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+                if (year == 2024)
+                {
+                    MessageBox.Show(string.Format("Év:{0} Fiúk:{1} Lányok:{2}", year, nbrOfMales, nbrOfFemales));
+                }
+                
+
+            }
 
         }
+
+        private void SimStep(int year, Person person)
+        {
+            if (!person.IsAlive)
+            {
+                return;
+            }
+
+            byte age = (byte)(year - person.BirthYear);
+            double PDeath = (from d in DeathProbabilities
+                             where d.Age == age && d.Gender == person.Gender
+                             select d.DeathProb).FirstOrDefault();
+            if (rng.NextDouble()<PDeath)
+            {
+                person.IsAlive = false;
+            }
+            if (person.IsAlive == true && person.Gender == Gender.Female)
+            {
+                double PBirth = (from b in BirthProbabilities
+                                 where b.Age == age
+                                 select b.BirthProb).FirstOrDefault();
+                if (rng.NextDouble()<PBirth)
+                {
+                    Person newborn = new Person();
+                    newborn.BirthYear = year;
+                    newborn.NbrOfChildren = 0;
+                    newborn.Gender = (Gender)(rng.Next(1, 3));
+                    Population.Add(newborn);
+                }
+            }
+        }
+
         public List<Person> GetPopulation (string csvpath)
         {
             List<Person> population = new List<Person>();
